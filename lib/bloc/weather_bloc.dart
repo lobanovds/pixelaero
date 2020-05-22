@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:pixaeroweather/events/location_event.dart';
+import 'package:pixaeroweather/events/weather_event.dart';
 import 'package:pixaeroweather/services/weather.dart';
 
-class LocationBloc {
+class WeatherBloc {
   String _currentCity = 'London';
   WeatherModel _currentWeather = WeatherModel();
 
@@ -16,14 +16,14 @@ class LocationBloc {
   StreamSink<WeatherModel> get _inWeather => _weatherStateController.sink;
   Stream<WeatherModel> get currentWeather => _weatherStateController.stream;
 
-  final _cityEventController = StreamController<LocationEvent>();
-  Sink<LocationEvent> get citySink => _cityEventController.sink;
+  final _cityEventController = StreamController<WeatherEvent>();
+  Sink<WeatherEvent> get citySink => _cityEventController.sink;
 
-  LocationBloc() {
+  WeatherBloc() {
     _cityEventController.stream.listen(_mapEventToState);
   }
 
-  void _mapEventToState(LocationEvent event) {
+  void _mapEventToState(WeatherEvent event) {
     if (event is CityUpdate) {
       var rng = new Random();
       _currentCity = rng.nextDouble().toString();

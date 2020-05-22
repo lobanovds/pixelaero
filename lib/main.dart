@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pixaeroweather/bloc/weather_station_bloc.dart';
-import 'package:pixaeroweather/bloc/location_bloc.dart';
+import 'package:pixaeroweather/bloc/weather_bloc.dart';
 import 'package:pixaeroweather/events/weather_event.dart';
-import 'package:pixaeroweather/events/location_event.dart';
 import 'package:pixaeroweather/services/weather.dart';
 
 void main() => runApp(MyApp());
@@ -39,8 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
     initWeatherModel.getLocationWeather();
   }
 
-  final _weatherBloc = WeatherBloc();
-  final _locationBloc = LocationBloc();
+  final _locationBloc = WeatherBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     //Important! To prevent memory overflow
-    _weatherBloc.dispose();
     _locationBloc.dispose();
     super.dispose();
   }

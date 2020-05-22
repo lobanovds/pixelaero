@@ -1,3 +1,5 @@
-abstract class WeatherStationEvent {}
+abstract class WeatherEvent {}
 
-class WeatherUpdate extends WeatherStationEvent {}
+class LocationUpdate extends WeatherEvent {}
+
+class CityUpdate extends WeatherEvent {}
