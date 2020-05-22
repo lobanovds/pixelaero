@@ -11,16 +11,14 @@ class WeatherModel {
   Future<void> getLocationWeather() async {
     try {
       Location location = Location();
-      await location.getCurrentLocation();
+      coordinates = await location.getCurrentLocation();
+
       NetworkHelper networkHelper = new NetworkHelper(
-          '$openWeatherMapURL?lat=${location.coordinates.latitude}&lon=${location.coordinates.longitude}&units=metric&appid=$apiKey');
+          '$openWeatherMapURL?lat=${coordinates.latitude}&lon=${coordinates.longitude}&units=metric&appid=$apiKey');
       var weatherData = await networkHelper.getData();
 
       cityName = weatherData['name'];
       temperature = weatherData['main']['temp'].toDouble().toInt();
-      coordinates = Coordinates(
-          longitude: location.coordinates.longitude,
-          latitude: location.coordinates.latitude);
     } catch (e) {
       print(e);
     }
