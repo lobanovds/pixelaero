@@ -5,8 +5,8 @@ import 'package:pixaeroweather/utilites/coords.dart';
 
 class WeatherModel {
   String cityName = '';
-  int temperature;
-  Coordinates coordinates;
+  int temperature = 0;
+  Coordinates coordinates = Coordinates(latitude: 0.0, longitude: 0.0);
 
   Future<void> getLocationWeather() async {
     try {

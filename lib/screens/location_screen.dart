@@ -42,23 +42,39 @@ class _LocationScreen extends State<LocationScreen> {
             initialData: initWeatherModel,
             builder:
                 (BuildContext context, AsyncSnapshot<WeatherModel> snapshot) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+              if (snapshot.data != null) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'current City ${snapshot.data.cityName ?? ''} ',
+                    ),
+                    Text(
+                      'in lat: ${snapshot.data.coordinates.latitude ?? '0.0'}',
+                    ),
+                    Text(
+                      'and long: ${snapshot.data.coordinates.longitude ?? '0.0'}',
+                    ),
+                    Text(
+                      'Temperature ${snapshot.data.temperature ?? -100}',
+                    )
+                  ],
+                );
+              } else
+                return Column(children: <Widget>[
                   Text(
-                    'current City ${snapshot.data.cityName ?? ''} ',
+                    'current City --- ',
                   ),
                   Text(
-                    'in lat: ${snapshot.data.coordinates.latitude ?? '0.0'}',
+                    'in lat: 0.0',
                   ),
                   Text(
-                    'and long: ${snapshot.data.coordinates.longitude ?? '0.0'}',
+                    'and long: 0.0',
                   ),
                   Text(
-                    'Temperature ${snapshot.data.temperature ?? -100}',
+                    'Temperature  -100}',
                   )
-                ],
-              );
+                ]);
             }),
       ),
       floatingActionButton: FloatingActionButton(
