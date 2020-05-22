@@ -7,6 +7,8 @@ import 'package:pixaeroweather/services/weather.dart';
 
 void main() => runApp(MyApp());
 
+WeatherModel initWeatherModel;
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    initWeatherModel = WeatherModel();
+    initWeatherModel.getLocationWeather();
+  }
+
   final _weatherBloc = WeatherBloc();
   final _locationBloc = LocationBloc();
 
   @override
   Widget build(BuildContext context) {
-    WeatherModel initWeatherModel = WeatherModel();
-    initWeatherModel.getLocationWeather();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -45,32 +52,32 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            StreamBuilder(
-                stream: _locationBloc.currentWeather, //stream,
-                initialData: initWeatherModel,
-                builder: (BuildContext context,
-                    AsyncSnapshot<WeatherModel> snapshot) {
-                  return Text(
-                    'current City ${snapshot.data.cityName} in lat: ${snapshot.data.coordinates.latitude ?? '0.0'} and long: ${snapshot.data.coordinates.longitude ?? '0.0'}',
-                  );
-                }),
-            StreamBuilder(
-                stream: _weatherBloc.currentTemperature, //stream,
-                initialData: 0.0,
-                builder:
-                    (BuildContext context, AsyncSnapshot<double> snapshot) {
-                  return Text(
-                    snapshot.data.toString(),
-                  );
-                }),
-          ],
-        ),
+        child: StreamBuilder(
+            stream: _locationBloc.currentWeather, //stream,
+            initialData: initWeatherModel,
+            builder:
+                (BuildContext context, AsyncSnapshot<WeatherModel> snapshot) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'current City ${snapshot.data.cityName} ',
+                  ),
+                  Text(
+                    'in lat: ${snapshot.data.coordinates.latitude ?? '0.0'}',
+                  ),
+                  Text(
+                    'and long: ${snapshot.data.coordinates.longitude ?? '0.0'}',
+                  ),
+                  Text(
+                    'Temperature ${snapshot.data.temperature}',
+                  )
+                ],
+              );
+            }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _weatherBloc.weatherStationSink.add(WeatherUpdate()),
+        onPressed: () => _locationBloc.citySink.add(LocationUpdate()),
         tooltip: 'Increment',
         child: Icon(Icons.wb_sunny),
       ),

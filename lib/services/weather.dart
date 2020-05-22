@@ -5,19 +5,24 @@ import 'package:pixaeroweather/utilites/coords.dart';
 
 class WeatherModel {
   String cityName = '';
-  double temperature = 0.00;
+  int temperature;
   Coordinates coordinates;
 
-  Future<dynamic> getLocationWeather() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    NetworkHelper networkHelper = new NetworkHelper(
-        '$openWeatherMapURL?lat=${location.coordinates.latitude}&lon=${location.coordinates.longitude}&units=metric&appid=$apiKey');
-    var weatherData = await networkHelper.getData();
-    cityName = weatherData['name'];
-    temperature = weatherData['main']['temp'].toDouble().toInt();
-    coordinates.latitude = location.coordinates.latitude;
-    coordinates.longitude = location.coordinates.longitude;
-    return weatherData;
+  Future<void> getLocationWeather() async {
+    try {
+      Location location = Location();
+      await location.getCurrentLocation();
+      NetworkHelper networkHelper = new NetworkHelper(
+          '$openWeatherMapURL?lat=${location.coordinates.latitude}&lon=${location.coordinates.longitude}&units=metric&appid=$apiKey');
+      var weatherData = await networkHelper.getData();
+
+      cityName = weatherData['name'];
+      temperature = weatherData['main']['temp'].toDouble().toInt();
+      coordinates = Coordinates(
+          longitude: location.coordinates.longitude,
+          latitude: location.coordinates.latitude);
+    } catch (e) {
+      print(e);
+    }
   }
 }
